@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .form-container {
+        background-color: var(--light-card);
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin: 2rem auto;
+        max-width: 800px;
+        border: 1px solid var(--light-border);
+    }
+
+    .dark-mode .form-container {
+        background-color: var(--dark-card);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        border-color: var(--dark-border);
+    }
+
+    .form-title {
+        font-family: 'Playfair Display', serif;
+        text-align: center;
+        margin-bottom: 2rem;
+        color: var(--primary);
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .form-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--light-text);
+    }
+
+    .dark-mode .form-label {
+        color: var(--dark-text);
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        border: 1px solid var(--light-border);
+        transition: all 0.3s ease;
+        background-color: var(--light-bg);
+        color: var(--light-text);
+    }
+
+    .dark-mode .form-control {
+        background-color: var(--dark-card);
+        border-color: var(--dark-border);
+        color: var(--dark-text);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+    }
+
+    .btn-predict {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: white;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .btn-predict:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        background: linear-gradient(135deg, var(--primary-hover), var(--secondary));
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            padding: 20px;
+        }
+        
+        .form-group.row {
+            flex-direction: column;
+        }
+        
+        .col-sm-3, .col-sm-9 {
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        .form-label {
+            margin-bottom: 0.5rem;
+        }
+    }
+</style>
+
+<div class="container my-5">
+    <div class="form-container animate__animated animate__fadeIn">
+        <h2 class="form-title">Customer Segmentation Form</h2>
+        
+        <form action="result">
+            {% csrf_token %}
+            
+            <div class="form-group row">
+                <label for="email" class="col-sm-3 col-form-label form-label">Email:</label>
+                <div class="col-sm-9">
+                    <input type="email" class="form-control" id="email" placeholder="Email address" name="Email" required>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="gender" class="col-sm-3 col-form-label form-label">Gender:</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="gender" name="Gender" required>
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="ever-married" class="col-sm-3 col-form-label form-label">Ever Married:</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="ever-married" name="Ever_Married" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="age" class="col-sm-3 col-form-label form-label">Age:</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control" id="age" placeholder="Age" name="Age" required min="18" max="100">
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="graduated" class="col-sm-3 col-form-label form-label">Graduated:</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="graduated" name="Graduated" required>
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="profession" class="col-sm-3 col-form-label form-label">Profession:</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="profession" name="Profession" required>
+                        <option value="">Select</option>
+                        <option value="Artist">Artist</option>
+                        <option value="Engineer">Engineer</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Lawyer">Lawyer</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Executive">Executive</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Homemaker">Homemaker</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="work_exp" class="col-sm-3 col-form-label form-label">Work Experience:</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control" id="work_exp" placeholder="Years of experience" name="Work_Experience" required min="0" max="50">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="spending_score" class="col-sm-3 col-form-label form-label">Spending Score:</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="spending_score" name="Spending_Score" required>
+                        <option value="">Select</option>
+                        <option value="Low">Low</option>
+                        <option value="Average">Average</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <label for="family_size" class="col-sm-3 col-form-label form-label">Family Size:</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control" id="family_size" placeholder="Number of family members" name="Family_Size" required min="1" max="10">
+                </div>
+            </div>
+            
+            <div class="form-group row mt-4">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-predict btn-lg">
+                        <i class="fas fa-chart-pie mr-2"></i> Predict Segment
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

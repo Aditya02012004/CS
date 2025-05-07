@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 120px);
+        padding: 2rem;
+    }
+
+    .login-card {
+        background-color: var(--light-card);
+        border-radius: 16px;
+        padding: 2.5rem;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--light-border);
+    }
+
+    .dark-mode .login-card {
+        background-color: var(--dark-card);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        border-color: var(--dark-border);
+    }
+
+    .login-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    }
+
+    .login-title {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: var(--primary);
+        font-size: 2rem;
+        position: relative;
+        font-weight: 700;
+    }
+
+    .login-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: 3px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--light-text);
+        transition: all 0.3s ease;
+    }
+
+    .dark-mode .form-label {
+        color: var(--dark-text);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--light-border);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: var(--light-bg);
+        color: var(--light-text);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.25rem rgba(76, 175, 80, 0.25);
+        outline: none;
+    }
+
+    .dark-mode .form-control {
+        background-color: var(--dark-card);
+        border-color: var(--dark-border);
+        color: var(--dark-text);
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 15px;
+        top: 38px;
+        color: #aaa;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus + .input-icon {
+        color: var(--primary);
+    }
+
+    .login-btn {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 8px;
+        font-weight: 600;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .login-btn:hover {
+        background: linear-gradient(135deg, var(--primary-hover), var(--secondary));
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .login-btn:active {
+        transform: translateY(0);
+    }
+
+    .signup-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--light-text);
+        font-size: 0.95rem;
+    }
+
+    .dark-mode .signup-link {
+        color: var(--dark-text);
+    }
+
+    .signup-link a {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .signup-link a:hover {
+        color: var(--secondary);
+        text-decoration: underline;
+    }
+
+    /* Wave animation at bottom */
+    .wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%234CAF50" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%234CAF50" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%234CAF50"/></svg>');
+        background-size: cover;
+        background-repeat: no-repeat;
+        z-index: -1;
+        opacity: 0.8;
+        animation: wave 12s linear infinite;
+    }
+
+    .dark-mode .wave {
+        opacity: 0.3;
+    }
+
+    @keyframes wave {
+        0% { background-position-x: 0; }
+        100% { background-position-x: 1200px; }
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-card {
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    @media (max-width: 576px) {
+        .login-card {
+            padding: 1.5rem;
+        }
+        
+        .login-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="wave"></div>
+        <h2 class="login-title">Login</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+            
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                <i class="fas fa-user input-icon"></i>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="pass" placeholder="Enter your password" required>
+                <i class="fas fa-lock input-icon"></i>
+            </div>
+            
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+            
+            <div class="signup-link">
+                Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

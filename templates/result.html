@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .result-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 120px);
+        padding: 2rem;
+        text-align: center;
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-card {
+        background-color: var(--light-card);
+        border-radius: 16px;
+        padding: 2.5rem;
+        width: 100%;
+        max-width: 700px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 1px solid var(--light-border);
+    }
+
+    .dark-mode .result-card {
+        background-color: var(--dark-card);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        border-color: var(--dark-border);
+    }
+
+    .result-title {
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        font-size: 2.2rem;
+        position: relative;
+        font-weight: 700;
+        text-transform: capitalize;
+    }
+
+    .result-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: 3px;
+    }
+
+    .result-image {
+        width: 250px;
+        height: 250px;
+        object-fit: contain;
+        margin: 1.5rem auto;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        border: 1px solid var(--light-border);
+    }
+
+    .dark-mode .result-image {
+        border-color: var(--dark-border);
+    }
+
+    .result-image:hover {
+        transform: scale(1.05);
+    }
+
+    .result-description {
+        color: var(--light-text);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-top: 1.5rem;
+        text-align: left;
+    }
+
+    .dark-mode .result-description {
+        color: var(--dark-text);
+    }
+
+    .result-highlight {
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .result-list {
+        text-align: left;
+        margin-top: 1rem;
+        padding-left: 1.5rem;
+    }
+
+    .result-list li {
+        margin-bottom: 0.5rem;
+    }
+
+    .back-btn {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        margin-top: 2rem;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .back-btn:hover {
+        background: linear-gradient(135deg, var(--primary-hover), var(--secondary));
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        color: white;
+    }
+
+    .back-btn i {
+        margin-right: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .result-card {
+            padding: 1.5rem;
+        }
+        
+        .result-title {
+            font-size: 1.8rem;
+        }
+        
+        .result-image {
+            width: 200px;
+            height: 200px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .result-description {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="result-container">
+    <div class="result-card">
+        {% if result == 'A' %}
+            <h1 class="result-title">Class A: Affluent Professional</h1>
+            <img src="{% static 'images/1.png' %}" class="result-image" alt="Affluent Professional">
+            <div class="result-description">
+                <p><span class="result-highlight">Key Characteristics:</span></p>
+                <ul class="result-list">
+                    <li>Higher income professionals and executives</li>
+                    <li>Established in their careers with significant experience</li>
+                    <li>Married or in committed relationships</li>
+                    <li>Higher education levels (typically graduates)</li>
+                    <li>Smaller family size due to career focus</li>
+                    <li>High spending score on premium products</li>
+                </ul>
+            </div>
+        
+        {% elif result == 'B' %}
+            <h1 class="result-title">Class B: Young and Upcoming</h1>
+            <img src="{% static 'images/2.png' %}" class="result-image" alt="Young and Upcoming">
+            <div class="result-description">
+                <p><span class="result-highlight">Key Characteristics:</span></p>
+                <ul class="result-list">
+                    <li>Younger individuals early in their careers</li>
+                    <li>Single or recently married</li>
+                    <li>Moderate spending score with value-conscious behavior</li>
+                    <li>Varied professions, often in entry-level positions</li>
+                    <li>Some work experience but not at senior levels</li>
+                    <li>May be completing or recently completed education</li>
+                </ul>
+            </div>
+        
+        {% elif result == 'C' %}
+            <h1 class="result-title">Class C: Established Families</h1>
+            <img src="{% static 'images/3.jpg' %}" class="result-image" alt="Established Families">
+            <div class="result-description">
+                <p><span class="result-highlight">Key Characteristics:</span></p>
+                <ul class="result-list">
+                    <li>Middle-aged or older with stable family lives</li>
+                    <li>Married with moderate to large family sizes</li>
+                    <li>Homeowners with stable careers</li>
+                    <li>Moderate spending score focused on family needs</li>
+                    <li>Well-educated with graduation degrees</li>
+                    <li>Value family-oriented products and experiences</li>
+                </ul>
+            </div>
+        
+        {% else %}
+            <h1 class="result-title">Class D: Budget-Conscious Seniors</h1>
+            <img src="{% static 'images/4.jpg' %}" class="result-image" alt="Budget-Conscious Seniors">
+            <div class="result-description">
+                <p><span class="result-highlight">Key Characteristics:</span></p>
+                <ul class="result-list">
+                    <li>Older individuals, often retirees</li>
+                    <li>Smaller family sizes or living alone</li>
+                    <li>Lower spending score with price sensitivity</li>
+                    <li>Limited work experience or retired</li>
+                    <li>Prioritize savings and value in purchases</li>
+                    <li>More conservative in lifestyle choices</li>
+                </ul>
+            </div>
+        {% endif %}
+        
+        <a href="{% url 'home' %}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

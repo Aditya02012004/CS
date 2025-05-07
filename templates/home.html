@@ -1,0 +1,659 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ========== Hero Section ========== */
+    .hero-section {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        color: white;
+        padding: 6rem 0;
+        margin-bottom: 3rem;
+        border-radius: 0 0 20px 20px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* ========== Feature Cards ========== */
+    .feature-card {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        background-color: var(--light-card);
+        border: 1px solid var(--light-border);
+        padding: 2rem;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    
+    .feature-icon {
+        color: var(--primary);
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* ========== Tech Stack ========== */
+    .tech-stack {
+        margin: 2rem 0;
+    }
+    
+    .tech-item {
+        margin: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .tech-logo-container {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.05);
+        background-color: var(--light-card);
+        margin: 0 auto;
+    }
+    
+    .tech-logo {
+        max-width: 60px;
+        max-height: 60px;
+        filter: grayscale(20%);
+        transition: all 0.3s ease;
+    }
+    
+    .tech-item:hover .tech-logo {
+        filter: grayscale(0%);
+        transform: scale(1.1);
+    }
+    
+    .tech-item:hover .tech-logo-container {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    /* ========== Client Logos / Ribbon ========== */
+    .client-section {
+        background-color: transparent;
+        overflow: hidden;
+    }
+    
+    .client-ribbon-container {
+        position: relative;
+        padding: 2rem 4rem;
+    }
+    
+    .client-ribbon {
+        display: flex;
+        width: 200%;
+        animation: scroll 40s linear infinite;
+        gap: 2rem;
+    }
+    
+    .client-ribbon-track {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 50%;
+        flex-shrink: 0;
+        gap: 2rem;
+    }
+    
+    .client-logo-wrapper {
+        flex: 0 0 auto;
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        height: 100px;
+        transition: transform 0.3s ease;
+    }
+    
+    .client-logo {
+        height: 80px;
+        margin: 20px;
+        opacity: 0.8;
+        filter: grayscale(100%);
+        transition: all 0.3s ease;
+    }
+    
+    .client-logo:hover {
+        opacity: 1;
+        filter: grayscale(0%);
+        transform: scale(1.05);
+    }
+    
+    .client-logo-wrapper:hover {
+        transform: translateY(-5px);
+    }
+    
+    @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    
+    .client-ribbon-container:hover .client-ribbon {
+        animation-play-state: paused;
+    }
+    
+    /* ========== Navigation Arrows ========== */
+    .client-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.8);
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        transition: all 0.3s ease;
+    }
+    
+    .client-arrow:hover {
+        background: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .client-arrow svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .client-arrow-left { left: 0; }
+    .client-arrow-right { right: 0; }
+    
+    /* ========== Buttons ========== */
+    .cta-button {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        background: linear-gradient(135deg, var(--primary-hover) 0%, var(--secondary) 100%);
+    }
+    
+    .cta-button.btn-lg {
+        padding: 15px 40px;
+        font-size: 1.1rem;
+    }
+    
+    .cta-button.secondary {
+        background: white;
+        color: var(--primary);
+        border: 1px solid var(--primary);
+    }
+    
+    .cta-button.secondary:hover {
+        background: var(--primary);
+        color: white;
+    }
+    
+    /* ========== Section Titles ========== */
+    .section-title {
+        position: relative;
+        margin-bottom: 3rem;
+        color: var(--light-text);
+        font-weight: 700;
+    }
+    
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        border-radius: 3px;
+    }
+    
+    /* ========== About Section ========== */
+    .about-section {
+        color: var(--light-text);
+    }
+    
+    /* ========== Dark Mode ========== */
+    .dark-mode {
+        --text: var(--dark-text);
+    }
+    
+    .dark-mode .feature-card {
+        background-color: var(--dark-card);
+        border: 1px solid var(--dark-border);
+    }
+    
+    .dark-mode .hero-section {
+        background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark-bg) 100%);
+    }
+    
+    .dark-mode .bg-light {
+        background-color: var(--dark-card) !important;
+    }
+    
+    .dark-mode p,
+    .dark-mode h4,
+    .dark-mode .section-title,
+    .dark-mode .about-section {
+        color: var(--dark-text) !important;
+    }
+    
+    .dark-mode .tech-logo-container {
+        background-color: var(--dark-card) !important;
+        border-color: var(--dark-border);
+    }
+    
+    .dark-mode .tech-item:hover .tech-logo-container {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    
+    .dark-mode .cta-button.secondary {
+        background: var(--dark-card);
+    }
+    
+    .dark-mode .client-arrow {
+        background: rgba(30, 30, 30, 0.8);
+        color: white;
+    }
+    
+    .dark-mode .client-arrow:hover {
+        background: var(--dark-card);
+    }
+    
+    .dark-mode .client-logo {
+        opacity: 0.7;
+    }
+    
+    .dark-mode .client-logo:hover {
+        opacity: 1;
+    }
+    
+    /* ========== Responsive ========== */
+    @media (max-width: 992px) {
+        .hero-section {
+            padding: 4rem 0;
+        }
+    
+        .client-logo {
+            max-height: 50px;
+            max-width: 120px;
+        }
+    
+        .client-logo-wrapper {
+            padding: 0 0.8rem;
+        }
+    
+        .client-ribbon-container {
+            padding: 2rem 3.5rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .tech-logo-container {
+            width: 80px;
+            height: 80px;
+        }
+    
+        .tech-logo {
+            max-width: 50px;
+            max-height: 50px;
+        }
+    
+        .client-logo {
+            max-height: 40px;
+            max-width: 100px;
+        }
+    
+        .client-logo-wrapper {
+            padding: 0 0.6rem;
+        }
+    
+        .client-ribbon-container {
+            padding: 2rem 3rem;
+        }
+    
+        .client-arrow {
+            width: 35px;
+            height: 35px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .hero-section {
+            padding: 3rem 0;
+        }
+    
+        .section-title {
+            font-size: 1.8rem;
+        }
+    
+        .feature-card {
+            padding: 1.5rem;
+        }
+    
+        .tech-item {
+            margin: 1rem;
+        }
+    
+        .client-ribbon-container {
+            padding: 2rem 1.5rem;
+        }
+    
+        .client-arrow {
+            width: 30px;
+            height: 30px;
+        }
+    
+        .client-arrow svg {
+            width: 16px;
+            height: 16px;
+        }
+    
+        .client-logo-wrapper {
+            height: 80px;
+        }
+    
+        .client-logo {
+            max-height: 40px;
+            max-width: 90px;
+        }
+    }
+    </style>
+    
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 mb-4">AI-Powered Customer Segmentation</h1>
+        <p class="lead mb-5">Transform your marketing strategy with intelligent customer insights and predictive analytics</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'index' %}" class="cta-button">Predict Now</a>
+            <a href="#how-it-works" class="cta-button secondary">Learn More</a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-5">
+    <div class="container">
+        <h2 class="text-center section-title">How It Works</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="feature-card p-4 text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-upload feature-icon"></i>
+                        <h4>Upload Data</h4>
+                        <p>Provide your customer data through our simple interface or API integration</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card p-4 text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-brain feature-icon"></i>
+                        <h4>AI Analysis</h4>
+                        <p>Our algorithms process and analyze customer behavior patterns</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card p-4 text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-chart-bar feature-icon"></i>
+                        <h4>Get Insights</h4>
+                        <p>Receive actionable segmentation reports and recommendations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Us Section -->
+<section class="about-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center section-title">About Us</h2>
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <p class="lead">We're a team of data scientists and marketing experts dedicated to helping businesses understand their customers better.</p>
+                <p>Our platform combines cutting-edge machine learning with practical marketing knowledge to deliver segmentation solutions that drive real business results.</p>
+                <p>Founded in 2023, we've helped hundreds of companies improve their customer engagement and marketing ROI.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'images/team.jpg' %}" alt="Our Team" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tech Stack Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center section-title">Our Technology</h2>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="d-flex flex-wrap justify-content-center align-items-center tech-stack">
+                    <div class="tech-item text-center m-4">
+                        <div class="tech-logo-container p-3 rounded-circle shadow-sm mb-3">
+                            <img src="{% static 'images/python-logo.jpg' %}" class="tech-logo" alt="Python">
+                        </div>
+                        <h5 class="mt-2">Python</h5>
+                        <p class="small text-muted">Core programming language</p>
+                    </div>
+                    
+                    <div class="tech-item text-center m-4">
+                        <div class="tech-logo-container p-3 rounded-circle shadow-sm mb-3">
+                            <img src="{% static 'images/django-logo.png' %}" class="tech-logo" alt="Django">
+                        </div>
+                        <h5 class="mt-2">Django</h5>
+                        <p class="small text-muted">Web framework</p>
+                    </div>
+                    
+                    <div class="tech-item text-center m-4">
+                        <div class="tech-logo-container p-3 rounded-circle shadow-sm mb-3">
+                            <img src="{% static 'images/tensorflow-logo.jpg' %}" class="tech-logo" alt="TensorFlow">
+                        </div>
+                        <h5 class="mt-2">TensorFlow</h5>
+                        <p class="small text-muted">Machine learning</p>
+                    </div>
+                    
+                    <div class="tech-item text-center m-4">
+                        <div class="tech-logo-container p-3 rounded-circle shadow-sm mb-3">
+                            <img src="{% static 'images/postgresql-logo.jpg' %}" class="tech-logo" alt="PostgreSQL">
+                        </div>
+                        <h5 class="mt-2">PostgreSQL</h5>
+                        <p class="small text-muted">Database</p>
+                    </div>
+                    
+                    <div class="tech-item text-center m-4">
+                        <div class="tech-logo-container p-3 rounded-circle shadow-sm mb-3">
+                            <img src="{% static 'images/bootstrap-logo.avif' %}" class="tech-logo" alt="Bootstrap">
+                        </div>
+                        <h5 class="mt-2">Bootstrap</h5>
+                        <p class="small text-muted">Frontend framework</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Clients Section -->
+<section class="client-section py-5">
+    <div class="container position-relative">
+        <h2 class="text-center section-title mb-5">Our Clients</h2>
+        <div class="client-ribbon-container">
+            <!-- Left Navigation Arrow -->
+            <button class="client-arrow client-arrow-left" aria-label="Scroll left">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+            
+            <div class="client-ribbon">
+                <!-- First Row -->
+                <div class="client-ribbon-track">
+                    {% for logo in client_logos_part1 %}
+                    <div class="client-logo-wrapper">
+                        <img src="{% static 'images/'|add:logo %}" 
+                             class="client-logo" 
+                             alt="{{ logo|cut:'.'|cut:'_'|title }}"
+                             onerror="this.style.display='none'">
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Second Row (Duplicate for seamless looping) -->
+                <div class="client-ribbon-track">
+                    {% for logo in client_logos_part2 %}
+                    <div class="client-logo-wrapper">
+                        <img src="{% static 'images/'|add:logo %}" 
+                             class="client-logo" 
+                             alt="{{ logo|cut:'.'|cut:'_'|title }}"
+                             onerror="this.style.display='none'">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Right Navigation Arrow -->
+            <button class="client-arrow client-arrow-right" aria-label="Scroll right">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA Section -->
+<section class="py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">Ready to Transform Your Customer Insights?</h2>
+        <a href="{% url 'index' %}" class="cta-button btn-lg">Get Started Now</a>
+    </div>
+</section>
+
+<script>
+    // Enhanced Client Ribbon Navigation
+    document.addEventListener('DOMContentLoaded', function() {
+        const ribbon = document.querySelector('.client-ribbon');
+        const leftArrow = document.querySelector('.client-arrow-left');
+        const rightArrow = document.querySelector('.client-arrow-right');
+        const track = document.querySelector('.client-ribbon-track');
+        let scrollPosition = 0;
+        let isAnimating = false;
+        let autoScrollInterval;
+        
+        // Get the width of one logo with margin
+        const logoWidth = track.firstElementChild ? 
+            track.firstElementChild.offsetWidth + parseInt(window.getComputedStyle(track).gap) : 120;
+        
+        // Calculate how many logos to scroll at once (3 logos or adjust based on viewport)
+        const scrollAmount = Math.max(1, Math.floor(window.innerWidth / logoWidth)) * logoWidth;
+
+        // Initialize ribbon position
+        ribbon.style.transform = `translateX(${scrollPosition}px)`;
+        
+        // Scroll left function
+        function scrollLeft() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            scrollPosition += scrollAmount;
+            if (scrollPosition > 0) {
+                scrollPosition = -track.offsetWidth;
+            }
+            
+            ribbon.style.transition = 'transform 0.5s ease';
+            ribbon.style.transform = `translateX(${scrollPosition}px)`;
+            
+            setTimeout(() => {
+                isAnimating = false;
+                ribbon.style.transition = '';
+            }, 500);
+        }
+        
+        // Scroll right function
+        function scrollRight() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            scrollPosition -= scrollAmount;
+            if (scrollPosition < -track.offsetWidth) {
+                scrollPosition = 0;
+            }
+            
+            ribbon.style.transition = 'transform 0.5s ease';
+            ribbon.style.transform = `translateX(${scrollPosition}px)`;
+            
+            setTimeout(() => {
+                isAnimating = false;
+                ribbon.style.transition = '';
+            }, 500);
+        }
+        
+        // Auto-scroll functionality
+        function startAutoScroll() {
+            autoScrollInterval = setInterval(scrollRight, 3000);
+        }
+        
+        function stopAutoScroll() {
+            clearInterval(autoScrollInterval);
+        }
+        
+        // Event listeners
+        leftArrow.addEventListener('click', scrollLeft);
+        rightArrow.addEventListener('click', scrollRight);
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') scrollLeft();
+            if (e.key === 'ArrowRight') scrollRight();
+        });
+        
+        // Touch events for mobile
+        let touchStartX = 0;
+        ribbon.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            stopAutoScroll();
+        }, {passive: true});
+        
+        ribbon.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) scrollRight(); // Swipe left
+            if (touchEndX - touchStartX > 50) scrollLeft(); // Swipe right
+            startAutoScroll();
+        }, {passive: true});
+        
+        // Pause on hover
+        ribbon.addEventListener('mouseenter', stopAutoScroll);
+        ribbon.addEventListener('mouseleave', startAutoScroll);
+        
+        // Start auto-scroll
+        startAutoScroll();
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            // Reset position on resize to prevent layout issues
+            scrollPosition = 0;
+            ribbon.style.transform = `translateX(${scrollPosition}px)`;
+        });
+    });
+</script>
+{% endblock %}
